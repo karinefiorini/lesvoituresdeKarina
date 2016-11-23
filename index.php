@@ -200,13 +200,35 @@
                         <!-- Car select end -->
 
                         <!-- Pick-up location start -->
-                
-                        <div class="location">
-                            <div class="input-group pick-up">
+                           <?php
+                            $sql = "SELECT `nom_de_l_agence`, FROM `agence`";
+                            $result = mysqli_query($conn, $sql);
+                        ?>
+
+
+                        <!-- Car select start -->
+                        
+                       
+                        <!--<div class="input-group pick-up">-->
+                        <div class="styled-select-car">
+                            <select name="car-select" id="car-select">
+                                <option value="">Select your agence</option>
+
+                        <?php
+                        if(mysqli_num_rows($result) > 0){
+                          while($row = mysqli_fetch_assoc($result)){ ?>
+                               <option value=""> <?php echo $row["nom_de_l_agence"]; ?></option>
+                         <?php }
+                        }
+                        ?>
+                                
+                            </select>
+                        </div>
+                            <!--<div class="input-group pick-up">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Pick-up</span>
 
                         <input type="text" name="pick-up-location" id="pick-up-location" class="form-control autocomplete-location" placeholder="Enter a City or Airport">        
-                            </div>
+                            </div>-->
                             <!-- Pick-up location end -->
 
                             <a class="different-drop-off" href="#">Need a different drop-off location?</a>
