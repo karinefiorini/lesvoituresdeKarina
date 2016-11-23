@@ -177,7 +177,7 @@
 
 
                         <?php
-                            $sql = "SELECT `modele`,`photo` FROM `vehicule`";
+                            $sql = "SELECT `idvehicule`,`modele`,`photo` FROM `vehicule`";
                             $result = mysqli_query($conn, $sql);
                         ?>
 
@@ -188,11 +188,11 @@
                                 <option value="">Select your car type</option>
 
                         <?php
-                        if(mysqli_num_rows($result) > 0){
-                          while($row = mysqli_fetch_assoc($result)){ ?>
-                               <option value=""> <?php echo $row["modele"]; ?></option>
-                         <?php }
-                        }
+                            if(mysqli_num_rows($result) > 0){
+                              while($row = mysqli_fetch_assoc($result)){ ?>
+                                   <option value="<?php echo $row["idvehicule"]; ?>"> <?php echo $row["modele"]; ?></option>
+                             <?php }
+                            }
                         ?>
                                 
                             </select>
@@ -468,39 +468,23 @@
         </div>
 
         <!-- Vehicle nav start -->
-
-        <?php
-            $sql = "SELECT `nombredeporte`, `nombredeplace`, `modele`, `prixlocation`, `transmission`, `climatisation`, `baggages`, `photo` FROM `vehicule`";
-            $result = mysqli_query($conn, $sql);
-        ?>
-
         <div class="col-md-3 vehicle-nav-row wow fadeInUp" data-wow-offset="100">
             <div id="vehicle-nav-container">
                 <ul class="vehicle-nav">
-                    <li class="active"><a href="#vehicle-1">VW Golf VII</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-2">Audi A1 S-LINE</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-3">Toyota Camry</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-4">BMW 320 ModernLine</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-5">Mercedes-Benz GLK</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-6">VW Passat CC</a><span class="active">&nbsp;</span></li>
 
-                    <li><a href="#vehicle-7">Audi A1 S-LINE</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-8">Toyota Camry</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-9">BMW 320 ModernLine</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-10">Mercedes-Benz GLK</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-11">VW Passat CC</a><span class="active">&nbsp;</span></li>
-
-                    <li><a href="#vehicle-7">Audi A1 S-LINE 12</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-8">Toyota Camry 13</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-9">BMW 320 ModernLine 14</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-10">Mercedes-Benz GLK 15</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-11">VW Passat CC 16</a><span class="active">&nbsp;</span></li>
-
-                    <li><a href="#vehicle-7">Audi A1 S-LINE</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-8">Toyota Camry</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-9">BMW 320 ModernLine</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-10">Mercedes-Benz GLK</a><span class="active">&nbsp;</span></li>
-                    <li><a href="#vehicle-11">VW Passat CC</a><span class="active">&nbsp;</span></li>
+                    <?php
+                        $sql = "SELECT `idvehicule`, `modele` FROM `vehicule`"; // selectionne les champs dont on a besoin
+                        $result = mysqli_query($conn, $sql); // interroge la base et stocke le resultat dans $result
+                        if(mysqli_num_rows($result) > 0){ // si le nombre de ligne dans le tableau des resultats est plus grand que 0
+                            while($row = mysqli_fetch_assoc($result)){ // tant qu'il y a des resultats on fait :
+                                echo '<li '; // on écrit le lien ... attention aux espaces
+                                if($row['idvehicule']==1) echo 'class="active"'; // si l'id est 1 on ajoute l'attribut class="active"
+                                echo '><a href="#vehicle-'.$row["idvehicule"].'">'.$row["modele"].'</a><span class="active">&nbsp;</span></li>';
+                                // on écrit le reste du lien 
+                                // correspond à <li class="active"><a href="#vehicle-2>model</a>"
+                            }
+                        }
+                    ?>
                 </ul>
             </div>
 
@@ -513,14 +497,25 @@
         <!-- Vehicle nav end -->
 
         <!-- Vehicle 1 data start -->
-        <div class="vehicle-data" id="vehicle-1">
-            <div class="col-md-6 wow fadeIn" data-wow-offset="100">
+        <?php
+            $sql = "SELECT `nombredeporte`, `nombredeplace`, `modele`, `prixlocation`, `transmission`, `climatisation`, `baggages`, `photo`, `idvehicule` FROM `vehicule`"; // selectionne tous les champs dont on a besoin
+            $result = mysqli_query($conn, $sql); // interroge la base et stocke le resultat dans $result
+            if(mysqli_num_rows($result) > 0){ // si le nombre de ligne dans le tableau des resultats est plus grand que 0
+                while($row = mysqli_fetch_assoc($result)){ // tant qu'il y a des resultats on fait :
+                echo '<div class="vehicle-data" id="vehicle-'.$row["idvehicule"].'">'; // on transforme l'id de la div
+        ?>
+        
+            <div class="col-md-6" data-wow-offset="100">
                 <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle1.jpg" alt="Vehicle">
+                    <?php // On va chercher la source dans la base idem pour la table en dessous
+                        echo '<img class="img-responsive" src="';
+                        echo $row["photo"];
+                        echo '" alt="Vehicle">'
+                    ?>
                 </div>
             </div>
-            <div class="col-md-3 wow fadeInUp" data-wow-offset="200">
-                <div class="vehicle-price">$ 37.40 <span class="info">rent per day</span></div>
+            <div class="col-md-3" data-wow-offset="200">
+                <div class="vehicle-price"><?php echo $row["prixlocation"]; ?> <span class="info">rent per day</span></div>
                 <table class="table vehicle-features">
                     <tr>
                         <td>Model</td>
@@ -528,23 +523,23 @@
                     </tr>
                     <tr>
                         <td>Doors</td>
-                        <td>4</td>
+                        <td><?php echo $row["nombredeporte"]; ?></td>
                     </tr>
                     <tr>
                         <td>Seats</td>
-                        <td>5</td>
+                        <td><?php echo $row["nombredeplace"]; ?></td>
                     </tr>
                     <tr>
                         <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
+                        <td><?php echo $row["baggages"]; ?></td>
                     </tr>
                     <tr>
                         <td>Transmission</td>
-                        <td>Automatic</td>
+                        <td><?php echo $row["transmission"]; ?></td>
                     </tr>
                     <tr>
                         <td>Air conditioning</td>
-                        <td>Yes</td>
+                        <td><?php echo $row["climatisation"]; ?></td>
                     </tr>
                     <tr>
                         <td>Minimum age</td>
@@ -555,453 +550,12 @@
             </div>
         </div>
         <!-- Vehicle 1 data end -->
-
-        <!-- Vehicle 2 data start -->
-        <div class="vehicle-data" id="vehicle-2">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle2.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 70.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 2 data end -->
-
-        <!-- Vehicle 3 data start -->
-        <div class="vehicle-data" id="vehicle-3">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle3.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 3 data end -->
-
-        <!-- Vehicle 4 data start -->
-        <div class="vehicle-data" id="vehicle-4">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle4.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 4 data end -->
-
-        <!-- Vehicle 5 data start -->
-        <div class="vehicle-data" id="vehicle-5">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle5.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 5 data end -->
-
-        <!-- Vehicle 6 data start -->
-        <div class="vehicle-data" id="vehicle-6">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle6.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 6 data end -->
-
-        <!-- Vehicle 7 data start -->
-        <div class="vehicle-data" id="vehicle-7">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle2.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 70.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 7 data end -->
-
-        <!-- Vehicle 8 data start -->
-        <div class="vehicle-data" id="vehicle-8">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle3.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 8 data end -->
-
-        <!-- Vehicle 9 data start -->
-        <div class="vehicle-data" id="vehicle-9">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle4.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 9 data end -->
-
-        <!-- Vehicle 10 data start -->
-        <div class="vehicle-data" id="vehicle-10">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle5.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 10 data end -->
-
-        <!-- Vehicle 11 data start -->
-        <div class="vehicle-data" id="vehicle-11">
-            <div class="col-md-6" data-wow-offset="200">
-                <div class="vehicle-img">
-                    <img class="img-responsive" src="img/vehicle6.jpg" alt="Vehicle">
-                </div>
-            </div>
-            <div class="col-md-3" data-wow-offset="200">
-                <div class="vehicle-price">$ 100.40 <span class="info">rent per day</span></div>
-                <table class="table vehicle-features">
-                    <tr>
-                        <td>Model</td>
-                        <td>Limousine</td>
-                    </tr>
-                    <tr>
-                        <td>Doors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Seats</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>Luggage</td>
-                        <td>2 Suitcases / 2 Bags</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>Automatic</td>
-                    </tr>
-                    <tr>
-                        <td>Air conditioning</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Minimum age</td>
-                        <td>25 years</td>
-                    </tr>
-                </table>
-                <a href="#teaser" class="reserve-button scroll-to"><span class="glyphicon glyphicon-calendar"></span> Reserve now</a>
-            </div>
-        </div>
-        <!-- Vehicle 11 data end -->
-
-    </div>
+        <?php 
+        }
+        }
+        ?>
+      </div>  
 </section>
-<!-- Vehicles end -->
-
-
-
 <!-- Reviews start -->
 <section id="reviews" class="container wow fadeInUp">
     <div class="row text-center">
