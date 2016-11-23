@@ -177,7 +177,7 @@
 
 
                         <?php
-                            $sql = "SELECT `modele`,`photo` FROM `vehicule`";
+                            $sql = "SELECT `idvehicule`,`modele`,`photo` FROM `vehicule`";
                             $result = mysqli_query($conn, $sql);
                         ?>
 
@@ -190,7 +190,7 @@
                         <?php
                         if(mysqli_num_rows($result) > 0){
                           while($row = mysqli_fetch_assoc($result)){ ?>
-                               <option value=""> <?php echo $row["modele"]; ?></option>
+                               <option value="<?php echo $row["idvehicule"]; ?>"> <?php echo $row["modele"]; ?></option>
                          <?php }
                         }
                         ?>
@@ -201,7 +201,7 @@
 
                         <!-- Pick-up location start -->
                            <?php
-                            $sql = "SELECT `nom_de_l_agence`, FROM `agence`";
+                            $sql = "SELECT `ville` FROM `agence`";
                             $result = mysqli_query($conn, $sql);
                         ?>
 
@@ -212,7 +212,38 @@
                         <!--<div class="input-group pick-up">-->
                         <div class="styled-select-car">
                             <select name="car-select" id="car-select">
-                                <option value="">Select your agence</option>
+                                <option value="">Agence de depart</option>
+
+                        <?php
+                        if(mysqli_num_rows($result) > 0){
+                          while($row = mysqli_fetch_assoc($result)){ ?>
+                               <option value=""> <?php echo $row["ville"]; ?></option>
+                         <?php }
+                        }
+                        ?>
+                                
+                            </select>
+                        </div>
+                            <div class="input-group pick-up"></div>
+                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Pick-up</span>
+                        
+                        <!--<input type="text" name="pick-up-location" id="pick-up-location" class="form-control autocomplete-location" placeholder="Enter a City or Airport">        
+                            </div>
+                            <!-- Pick-up location end -->
+
+                            <!--<a class="different-drop-off" href="#">Agence de retour</a>
+
+                            <!-- Drop-off location start -->
+                        <?php
+                            $sql = "SELECT `nom_de_l_agence` FROM `agence`";
+                            $result = mysqli_query($conn, $sql);
+                        ?>
+
+
+                        <!-- Car select start -->
+                        <div class="styled-select-car">
+                            <select name="car-select" id="car-select">
+                                <option value="">Agence de retour</option>
 
                         <?php
                         if(mysqli_num_rows($result) > 0){
@@ -224,21 +255,13 @@
                                 
                             </select>
                         </div>
-                            <!--<div class="input-group pick-up">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Pick-up</span>
-
-                        <input type="text" name="pick-up-location" id="pick-up-location" class="form-control autocomplete-location" placeholder="Enter a City or Airport">        
-                            </div>-->
-                            <!-- Pick-up location end -->
-
-                            <a class="different-drop-off" href="#">Need a different drop-off location?</a>
-
-                            <!-- Drop-off location start -->
-                            <div class="input-group drop-off">
+                            <!--<div class="input-group drop-off">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span> Drop-off</span>
                                 <input type="text" name="drop-off-location" id="drop-off-location" class="form-control autocomplete-location" placeholder="Enter a City or Airport">
                             </div>
                         </div>
+
+
                         <!-- Drop-off location end -->
 
                         <!-- Pick-up date/time start -->
