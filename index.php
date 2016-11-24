@@ -2,7 +2,7 @@
     $host = "localhost";// var host =  "localhost";
     $user = "root"; // var user = "root";
     $password = "";// var password = "";
-    $database = "mydb";// var datbase = "mydb";
+    $database = "mydb";// var datbase = "mydb test";
     $conn =  mysqli_connect($host, $user, $password, $database);
 ?>
 <!DOCTYPE html>
