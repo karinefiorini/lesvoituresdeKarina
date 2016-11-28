@@ -1251,14 +1251,18 @@
         <div class="col-md-8 col-xs-12 pull-left">
             <p class="contact-info">You have any questions or need additional information? <br>
                 <span class="address"><span class="highlight">Address:</span>  Car|Rental / 3861 Sepulveda Blvd. / Culver City, CA 90230</span></p>
-            <form action="#" method="post" id="contact-form" name="contact-form">
+           
+
+
+
+            <form action="cible.php" method="post" id="contact-form" name="contact-form">
                 <input type="hidden" name="action" value="send_contact_form"/>
 
                 <div class="alert hidden" id="contact-form-msg"></div>
 
                 <div class="form-group">
-                    <input type="text" class="form-control first-name text-field" name="first-name" placeholder="First Name:">
-                    <input type="text" class="form-control last-name text-field" name="last-name" placeholder="Last Name:">
+                    <input type="text" class="form-control first-name text-field" name="firstname" placeholder="First Name:">
+                    <input type="text" class="form-control last-name text-field" name="lastname" placeholder="Last Name:">
                     <div class="clearfix"></div>
                 </div>
 

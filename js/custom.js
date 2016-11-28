@@ -314,41 +314,41 @@ $( "#newsletter-form" ).submit(function() {
 // Contact Form
 //-------------------------------------------------------------------------------
 
-$( "#contact-form" ).submit(function() {
+// $( "#contact-form" ).submit(function() {
 
-  $('#contact-form-msg').addClass('hidden');
-  $('#contact-form-msg').removeClass('alert-success');
-  $('#contact-form-msg').removeClass('alert-danger');
+  // $('#contact-form-msg').addClass('hidden');
+  // $('#contact-form-msg').removeClass('alert-success');
+  // $('#contact-form-msg').removeClass('alert-danger');
 
-  $('#contact-form input[type=submit]').attr('disabled', 'disabled');
+  // $('#contact-form input[type=submit]').attr('disabled', 'disabled');
 
-  $.ajax({
-    type: "POST",
-    url: "php/index.php",
-    data: $("#contact-form").serialize(),
-    dataType: "json",
-    success: function(data) {
+  // $.ajax({
+  //   type: "POST",
+  //   url: "php/index.php",
+  //   data: $("#contact-form").serialize(),
+  //   dataType: "json",
+  //   success: function(data) {
 
-      if('success' == data.result)
-      {
-        $('#contact-form-msg').css('visibility','visible').hide().fadeIn().removeClass('hidden').addClass('alert-success');
-        $('#contact-form-msg').html(data.msg[0]);
-        $('#contact-form input[type=submit]').removeAttr('disabled');
-        $('#contact-form')[0].reset();
-      }
+  //     if('success' == data.result)
+  //     {
+  //       $('#contact-form-msg').css('visibility','visible').hide().fadeIn().removeClass('hidden').addClass('alert-success');
+  //       $('#contact-form-msg').html(data.msg[0]);
+  //       $('#contact-form input[type=submit]').removeAttr('disabled');
+  //       $('#contact-form')[0].reset();
+  //     }
 
-      if('error' == data.result)
-      {
-        $('#contact-form-msg').css('visibility','visible').hide().fadeIn().removeClass('hidden').addClass('alert-danger');
-        $('#contact-form-msg').html(data.msg[0]);
-        $('#contact-form input[type=submit]').removeAttr('disabled');
-      }
+  //     if('error' == data.result)
+  //     {
+  //       $('#contact-form-msg').css('visibility','visible').hide().fadeIn().removeClass('hidden').addClass('alert-danger');
+  //       $('#contact-form-msg').html(data.msg[0]);
+  //       $('#contact-form input[type=submit]').removeAttr('disabled');
+  //     }
 
-    }
-  });
+  //   }
+  // });
 
-  return false;
-});
+//   return false;
+// });
 
 
 
